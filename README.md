@@ -1,5 +1,3 @@
-# Focus-app index.html
-Test
 <!DOCTYPE html>
 <html lang="ru">
 <head>
