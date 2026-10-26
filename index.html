@@ -1,96 +1,150 @@
 <!DOCTYPE html>
 <html lang="ru"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <title>Фокус</title>
 <style>
-:root{--c:#7c5cff}
-*{box-sizing:border-box}
-body{margin:0;background:#111;color:#fff;font-family:-apple-system,sans-serif;padding-bottom:90px}
-.screen{display:none;padding:20px}.screen.on{display:block}
-h2{margin-top:0}
-.card{background:#1c1c1e;border-radius:14px;padding:14px;margin-bottom:12px}
-.bar{height:8px;background:#333;border-radius:4px;overflow:hidden;margin:8px 0}
-.bar i{display:block;height:100%;background:var(--c)}
-button{background:var(--c);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-size:15px}
-button.g{background:#333;margin-top:8px}
-input,textarea{width:100%;padding:12px;border-radius:10px;border:0;background:#2a2a2c;color:#fff;font-size:16px;margin-bottom:8px;font-family:inherit}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#1c1c1e;padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
-nav button{flex:1;background:none;color:#aaa;border-radius:0}
-nav button.on{color:var(--c)}
-.fab{position:fixed;left:20px;bottom:90px;width:54px;height:54px;border-radius:27px;font-size:30px;padding:0}
-#add{display:none}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:Georgia,'Times New Roman',serif}
+html,body{margin:0;height:100%;overflow:hidden}
+body{color:rgba(255,255,255,.85);background:radial-gradient(circle at 18% 28%,rgba(120,200,180,.3),transparent 40%),radial-gradient(circle at 85% 72%,rgba(30,80,70,.55),transparent 45%),linear-gradient(90deg,#1c2e26,#405b53 55%,#6b8c89)}
+.g{background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 24px rgba(0,0,0,.25)}
+#top{position:fixed;left:0;right:0;top:0;z-index:5;display:flex;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 0}
+.ib{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9fc3bb;border:0;font-size:22px}
+.scr{position:absolute;inset:0;padding:calc(72px + env(safe-area-inset-top)) 18px 130px;overflow:auto;display:none}
+.scr.on{display:block}
+input,textarea{width:100%;padding:14px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:17px;margin-bottom:10px;outline:none}
+::placeholder{color:rgba(255,255,255,.5)}
+.card{border-radius:26px;padding:16px;margin-top:14px}
+.row{display:flex;align-items:center;gap:10px}
+.tt{flex:1;font-size:18px}
+.pr{display:flex;align-items:center;gap:8px;font-size:15px;margin-top:6px}
+.bar{flex:1;height:9px;border-radius:5px;background:rgba(255,255,255,.25);overflow:hidden}
+.bar i{display:block;height:100%;background:#3a4a46}
+.pill{border-radius:20px;padding:10px 18px;background:rgba(255,255,255,.14);color:inherit;border:1px solid rgba(255,255,255,.2);font-size:17px}
+.sm{padding:4px 14px}
+.red{color:#ff9a90;background:rgba(255,80,80,.18)}
+.sub{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:17px}
+#empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.big{width:150px;height:150px;border-radius:50%;color:#6f918a}
+#nav{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));height:78px;border-radius:39px;display:flex;touch-action:none;z-index:5}
+.sl{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;color:#6f918a}
+.sl svg{width:32px;height:32px}
+.pl{width:58px;height:58px;border-radius:50%;background:rgba(170,205,200,.5);color:#2c4741;display:flex;align-items:center;justify-content:center}
+#bub{position:absolute;top:6px;bottom:6px;left:0;border-radius:33px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.45);z-index:1;transition:transform .5s cubic-bezier(.3,1.4,.5,1),width .4s cubic-bezier(.3,1.4,.5,1)}
+#beta{position:absolute;left:30%;top:-30px;transform:translateX(-50%);padding:3px 12px;border-radius:14px;font-size:15px}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
+#ov.on{opacity:1;pointer-events:auto}
+#dr{position:fixed;top:0;bottom:0;left:0;width:74%;transform:translateX(-105%);transition:transform .35s;border-radius:0 28px 28px 0;padding:calc(90px + env(safe-area-inset-top)) 28px;z-index:9;font-size:26px}
+#dr.on{transform:none}
+#dr div{margin-bottom:22px}
+#md{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:10}
+#md.on{display:flex}
+#mb{width:86%;border-radius:28px;padding:22px;font-size:19px}
+.btns{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+h2{margin:0 0 16px;font-weight:normal}
 </style></head><body>
 
-<div class="screen on" id="home">
-  <h2>Дело дня</h2>
-  <div id="now"></div>
-  <h3>Выбрать на сегодня</h3>
-  <div id="pick"></div>
+<div id="top">
+<button class="ib g" onclick="drw(1)"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+<div class="ib g" style="opacity:.5">i</div>
 </div>
 
-<div class="screen" id="tasks">
-  <h2>Мои дела</h2>
-  <div id="add" class="card">
-    <input id="title" placeholder="Конечная цель / название дела">
-    <textarea id="subs" rows="5" placeholder="Подпункты, каждый с новой строки"></textarea>
-    <button onclick="addTask()">Создать</button>
-    <button class="g" onclick="toggleAdd()">Отмена</button>
-  </div>
-  <div id="list"></div>
-</div>
+<div id="home" class="scr on"><input id="q" class="g" placeholder="Поиск задач" oninput="render()"><div id="list"></div></div>
+<div id="empty"><button class="g big" onclick="openAdd()"><svg width="80" height="80" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M40 12v56M12 40h56"/></svg></button></div>
 
-<div class="screen" id="settings">
-  <h2>Настройки</h2>
-  <p>Цвет интерфейса</p>
-  <input type="range" min="0" max="360" id="hue" oninput="setHue(this.value)">
-</div>
+<div id="settings" class="scr"><h2>Настройки</h2>
+<div class="g card" style="margin-top:0"><div class="sub" style="margin:0"><span>Язык</span><span>Русский</span></div></div>
+<button class="pill red" style="margin-top:20px" onclick="ask('Вы действительно хотите сбросить все данные?','сбросить',()=>{S.tasks=[];save()})">Сбросить данные</button></div>
 
-<button class="fab" onclick="show('tasks');toggleAdd()">+</button>
-<nav>
-  <button data-n="home" class="on" onclick="show('home')">Главная</button>
-  <button data-n="tasks" onclick="show('tasks')">Дела</button>
-  <button data-n="settings" onclick="show('settings')">Настройки</button>
+<div id="profile" class="scr"><h2>Профиль</h2>
+<p style="margin:0 0 8px">Ник в приложении</p><input id="nk">
+<button class="pill" onclick="S.nick=document.getElementById('nk').value.trim();save()">сохранить</button><br>
+<button class="pill red" style="margin-top:20px" onclick="ask('Удалить аккаунт?','удалить',()=>{S={tasks:[],nick:''};save();show('home')})">Удалить аккаунт</button></div>
+
+<div id="ov" onclick="drw(0)"></div>
+<div id="dr" class="g"><div>Уведомления</div><div>Контакты</div><div>Архив</div></div>
+<div id="md"><div id="mb" class="g"></div></div>
+
+<nav id="nav" class="g">
+<div id="beta" class="g">бета</div>
+<div id="bub"></div>
+<div class="sl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></div>
+<div class="sl"><svg viewBox="0 0 1080 1280"><g fill="currentColor" stroke="currentColor"><rect x="258" y="427" width="564" height="563"/><rect x="322" y="130" width="61" height="300"/><rect x="707" y="130" width="61" height="300"/><line x1="335" y1="150" x2="228" y2="312" stroke-width="58"/><line x1="740" y1="150" x2="875" y2="305" stroke-width="58"/><line x1="258" y1="860" x2="102" y2="982" stroke-width="56"/><line x1="822" y1="780" x2="955" y2="605" stroke-width="56"/><rect x="258" y="990" width="52" height="262"/><rect x="358" y="990" width="52" height="217"/><rect x="448" y="990" width="48" height="123"/><rect x="580" y="990" width="47" height="123"/><rect x="668" y="990" width="50" height="217"/><rect x="770" y="990" width="52" height="252"/></g><rect x="321" y="545" width="132" height="130"/><rect x="637" y="545" width="132" height="130"/><rect x="383" y="571" width="60" height="38" fill="#fff"/><rect x="646" y="571" width="60" height="38" fill="#fff"/><rect x="476" y="802" width="128" height="74"/><rect x="510" y="802" width="60" height="38" fill="#6f918a"/></svg></div>
+<div class="sl"><div class="pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></div></div>
+<div class="sl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5.5" stroke-width="3"/><circle cx="12" cy="12" r="8.6" stroke-width="3" stroke-dasharray="3 3.4"/></svg></div>
+<div class="sl"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 4-7 8-7s8 2 8 7z"/></svg></div>
 </nav>
 
 <script>
-const tg=Telegram.WebApp;tg.ready();tg.expand();
-const $=id=>document.getElementById(id);
-let S;
-try{S=JSON.parse(localStorage.getItem('s'))}catch(e){}
-S=S||{tasks:[],today:{},hue:255};
-const day=()=>new Date().toISOString().slice(0,10);
+const $=s=>document.querySelector(s);
+const tg=window.Telegram&&Telegram.WebApp;
+try{tg.ready();tg.expand();tg.setBackgroundColor('#1c2e26');tg.setHeaderColor('#1c2e26')}catch(e){}
+let S;try{S=JSON.parse(localStorage.getItem('s'))}catch(e){}
+S=S||{tasks:[],nick:''};
+let pg='home',cur=0;
+const pages={0:'home',3:'settings',4:'profile'};
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pct=t=>t.subs.length?Math.round(t.subs.filter(s=>s.d).length/t.subs.length*100):0;
-function save(){localStorage.setItem('s',JSON.stringify(S));render()}
-function show(n){
-  document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on',e.id==n));
-  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.n==n));
-}
-function toggleAdd(){const a=$('add');a.style.display=a.style.display=='block'?'none':'block'}
-function addTask(){
-  const t=$('title').value.trim();if(!t)return;
-  const subs=$('subs').value.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>({t:x,d:false}));
-  S.tasks.push({id:Date.now(),title:t,subs});
-  $('title').value='';$('subs').value='';toggleAdd();save();
-}
-function tog(id,i){const t=S.tasks.find(x=>x.id==id);t.subs[i].d=!t.subs[i].d;save();
-  if(pct(t)==100&&confirm('Дело завершено?')){}}
-function pick(id){S.today={id,d:day()};save()}
-function del(id){if(confirm('Удалить дело?')){S.tasks=S.tasks.filter(x=>x.id!=id);save()}}
-function setHue(v){S.hue=+v;save()}
-function card(t){
-  return `<div class="card"><b>${t.title}</b> — ${pct(t)}%<div class="bar"><i style="width:${pct(t)}%"></i></div>`
-  +t.subs.map((s,i)=>`<div><label><input type="checkbox" style="width:auto" ${s.d?'checked':''} onchange="tog(${t.id},${i})"> ${s.t}</label></div>`).join('')
-  +`<button class="g" onclick="del(${t.id})">Удалить</button></div>`;
-}
+const tgNick=()=>{try{const u=tg.initDataUnsafe.user;return u.username||u.first_name}catch(e){return 'Гость'}};
+function save(){try{localStorage.setItem('s',JSON.stringify(S))}catch(e){}render()}
 function render(){
-  document.documentElement.style.setProperty('--c',`hsl(${S.hue},90%,65%)`);
-  $('hue').value=S.hue;
-  const tk=S.tasks.find(t=>t.id==S.today.id&&S.today.d==day());
-  $('now').innerHTML=tk?card(tk):'<p>Дело на сегодня не выбрано.</p>';
-  $('pick').innerHTML=S.tasks.map(t=>`<div class="card">${t.title} <button onclick="pick(${t.id})">На сегодня</button></div>`).join('')||'<p>Сначала добавь дело кнопкой «+».</p>';
-  $('list').innerHTML=S.tasks.map(card).join('');
+ const q=$('#q').value.toLowerCase(),e=!S.tasks.length;
+ $('#empty').style.display=(e&&pg=='home')?'flex':'none';
+ $('#q').style.display=e?'none':'block';
+ $('#list').innerHTML=S.tasks.filter(t=>t.title.toLowerCase().includes(q)).map((t,i)=>{const p=pct(t);
+ return `<div class="g card"><div class="row"><div class="tt">${i+1}. ${esc(t.title)}<div class="pr"><span>${p}%</span><div class="bar"><i style="width:${p}%"></i></div><span>100%</span></div></div><button class="pill" onclick="opn(${t.id})">${t.open?'закрыть':'открыть'}</button></div>`
+ +(t.open?t.subs.map((s,j)=>`<div class="sub"><span>${esc(s.t)}</span><button class="pill sm" onclick="chk(${t.id},${j})">${s.d?'✓':'✕'}</button></div>`).join(''):'')+`</div>`}).join('');
 }
-render();
+const gt=id=>S.tasks.find(t=>t.id==id);
+function opn(id){const t=gt(id);t.open=!t.open;save()}
+function chk(id,j){const s=gt(id).subs[j];s.d=!s.d;save()}
+function show(p){pg=p;document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==p));if(p=='profile')$('#nk').value=S.nick||tgNick();render()}
+function drw(o){$('#dr').classList.toggle('on',!!o);$('#ov').classList.toggle('on',!!o)}
+function modal(h){$('#mb').innerHTML=h;$('#md').classList.add('on')}
+function closeM(){$('#md').classList.remove('on')}
+function ask(t,ok,fn){window._f=fn;modal(`<div>${t}</div><div class="btns"><button class="pill red" onclick="closeM();_f()">${ok}</button><button class="pill" onclick="closeM()">отмена</button></div>`)}
+function openAdd(){modal(`<input id="nt" placeholder="Название дела"><textarea id="ns" rows="4" placeholder="Подпункты, каждый с новой строки"></textarea><div class="btns"><button class="pill" onclick="addT()">создать</button><button class="pill" onclick="closeM()">отмена</button></div>`)}
+function addT(){const t=$('#nt').value.trim();if(!t)return;
+ const subs=$('#ns').value.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>({t:x,d:false}));
+ S.tasks.push({id:Date.now(),title:t,subs,open:false});closeM();show('home');save()}
+
+const nav=$('#nav'),bub=$('#bub');
+const W=()=>nav.clientWidth/5;
+function place(l,w){bub.style.transform=`translateX(${l}px)`;bub.style.width=w+'px'}
+function home(){place(cur*W()+4,W()-8)}
+function goTo(i){
+ if(i==cur||!(i in pages)){home();return}
+ const a=Math.min(i,cur),b=Math.max(i,cur);
+ place(a*W()+4,(b-a+1)*W()-8);
+ cur=i;show(pages[i]);
+ setTimeout(home,170);
+}
+let d=null;
+nav.addEventListener('pointerdown',e=>{
+ const x=e.clientX-nav.getBoundingClientRect().left;
+ d={x0:e.clientX,i:Math.min(4,Math.floor(x/W())),dx:0,drag:false,onB:Math.abs(x-(cur*W()+W()/2))<W()/2};
+ nav.setPointerCapture(e.pointerId);
+});
+nav.addEventListener('pointermove',e=>{
+ if(!d)return;
+ const dx=Math.max(-W(),Math.min(W(),e.clientX-d.x0));
+ if(!d.drag&&Math.abs(dx)>8&&d.onB){d.drag=true;bub.style.transition='none'}
+ if(!d.drag)return;
+ d.dx=dx;const b=W()-8,l=cur*W()+4;
+ dx>0?place(l,b+dx):place(l+dx,b-dx);
+});
+nav.addEventListener('pointerup',()=>{
+ if(!d)return;
+ bub.style.transition='';
+ if(d.drag){
+  const t=cur+(Math.abs(d.dx)>W()*.4?Math.sign(d.dx):0);
+  if(t==2){home();openAdd()}else goTo(t);
+ }else{
+  if(d.i==2)openAdd();else if(d.i!=1)goTo(d.i);
+ }
+ d=null;
+});
+addEventListener('resize',home);
+home();render();
 </script>
 </body></html>
