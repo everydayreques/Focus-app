@@ -5,43 +5,57 @@
 <title>Фокус</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:Georgia,'Times New Roman',serif}
+:root{--ease:cubic-bezier(.32,.72,0,1)}
 html,body{margin:0;height:100%;overflow:hidden}
-body{color:rgba(255,255,255,.85);background:radial-gradient(circle at 18% 28%,rgba(120,200,180,.3),transparent 40%),radial-gradient(circle at 85% 72%,rgba(30,80,70,.55),transparent 45%),linear-gradient(90deg,#1c2e26,#405b53 55%,#6b8c89)}
+body{color:rgba(255,255,255,.88);background:radial-gradient(circle at 18% 28%,rgba(120,200,180,.3),transparent 40%),radial-gradient(circle at 85% 72%,rgba(30,80,70,.55),transparent 45%),linear-gradient(90deg,#1c2e26,#405b53 55%,#6b8c89)}
 .g{background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 24px rgba(0,0,0,.25)}
-#top{position:fixed;left:0;right:0;top:0;z-index:5;display:flex;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 0}
+#top{position:fixed;left:0;right:0;top:0;z-index:6;display:flex;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 0}
 .ib{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9fc3bb;border:0;font-size:22px}
-.scr{position:absolute;inset:0;padding:calc(72px + env(safe-area-inset-top)) 18px 130px;overflow:auto;display:none}
+.scr{position:absolute;inset:0;padding:calc(72px + env(safe-area-inset-top)) 18px 140px;overflow:auto;display:none}
 .scr.on{display:block}
+h2{margin:0 0 16px;font-weight:normal}
 input,textarea{width:100%;padding:14px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:17px;margin-bottom:10px;outline:none}
 ::placeholder{color:rgba(255,255,255,.5)}
-.card{border-radius:26px;padding:16px;margin-top:14px}
+.srch{position:relative;margin-bottom:6px}
+.srch input{margin:0;padding-right:54px}
+#x{position:absolute;right:10px;top:9px;width:34px;height:34px;border-radius:50%;padding:0;font-size:22px;color:inherit;opacity:0;transform:scale(.4);pointer-events:none;transition:opacity .25s,transform .35s var(--ease)}
+#x.on{opacity:1;transform:none;pointer-events:auto}
+.card{position:relative;overflow:hidden;border-radius:26px;padding:16px;margin-top:14px}
 .row{display:flex;align-items:center;gap:10px}
 .tt{flex:1;font-size:18px}
 .pr{display:flex;align-items:center;gap:8px;font-size:15px;margin-top:6px}
 .bar{flex:1;height:9px;border-radius:5px;background:rgba(255,255,255,.25);overflow:hidden}
-.bar i{display:block;height:100%;background:#3a4a46}
+.bar i{display:block;height:100%;background:#3a4a46;transition:width .4s var(--ease)}
 .pill{border-radius:20px;padding:10px 18px;background:rgba(255,255,255,.14);color:inherit;border:1px solid rgba(255,255,255,.2);font-size:17px}
+.pill.on{background:rgba(255,255,255,.32)}
 .sm{padding:4px 14px}
 .red{color:#ff9a90;background:rgba(255,80,80,.18)}
-.sub{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:17px}
+.sub{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:17px;gap:8px}
+.act{justify-content:space-between;margin-top:16px}
+.act svg{display:block}
 #empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
 .big{width:150px;height:150px;border-radius:50%;color:#6f918a}
-#nav{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));height:78px;border-radius:39px;display:flex;touch-action:none;z-index:5}
+.sw{position:relative;margin-top:14px}
+.sw .card{margin:0;touch-action:pan-y;transition:transform .3s var(--ease)}
+.rs{position:absolute;right:6px;top:50%;transform:translateY(-50%);opacity:0}
+#nav{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));height:78px;border-radius:39px;display:flex;touch-action:none;z-index:5;transition:transform .35s var(--ease)}
+body.typing #nav{transform:translateY(170%)}
 .sl{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;color:#6f918a}
 .sl svg{width:32px;height:32px}
 .pl{width:58px;height:58px;border-radius:50%;background:rgba(170,205,200,.5);color:#2c4741;display:flex;align-items:center;justify-content:center}
-#bub{position:absolute;top:6px;bottom:6px;left:0;border-radius:33px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.45);z-index:1;transition:transform .5s cubic-bezier(.3,1.4,.5,1),width .4s cubic-bezier(.3,1.4,.5,1)}
-#beta{position:absolute;left:30%;top:-30px;transform:translateX(-50%);padding:3px 12px;border-radius:14px;font-size:15px}
+#bub{position:absolute;top:6px;bottom:6px;border-radius:33px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.45);z-index:1;transition:left var(--tl,.4s) var(--ease),right var(--tr,.4s) var(--ease)}
+#bub.drag{transition:none}
+#beta{position:fixed;bottom:calc(14px + 76px + env(safe-area-inset-bottom));padding:5px 16px;border-radius:16px;font-size:17px;z-index:4;opacity:0;transform:translate(-50%,46px);transition:transform .55s var(--ease),opacity .4s;pointer-events:none}
+#beta.on{opacity:1;transform:translate(-50%,0)}
 #ov{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
 #ov.on{opacity:1;pointer-events:auto}
-#dr{position:fixed;top:0;bottom:0;left:0;width:74%;transform:translateX(-105%);transition:transform .35s;border-radius:0 28px 28px 0;padding:calc(90px + env(safe-area-inset-top)) 28px;z-index:9;font-size:26px}
+#dr{position:fixed;top:0;bottom:0;left:0;width:74%;transform:translateX(-105%);transition:transform .35s var(--ease);border-radius:0 28px 28px 0;padding:calc(90px + env(safe-area-inset-top)) 28px;z-index:9;font-size:26px}
 #dr.on{transform:none}
 #dr div{margin-bottom:22px}
 #md{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:10}
 #md.on{display:flex}
 #mb{width:86%;border-radius:28px;padding:22px;font-size:19px}
 .btns{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
-h2{margin:0 0 16px;font-weight:normal}
 </style></head><body>
 
 <div id="top">
@@ -49,24 +63,29 @@ h2{margin:0 0 16px;font-weight:normal}
 <div class="ib g" style="opacity:.5">i</div>
 </div>
 
-<div id="home" class="scr on"><input id="q" class="g" placeholder="Поиск задач" oninput="render()"><div id="list"></div></div>
+<div id="home" class="scr on">
+<div class="srch"><input id="q" class="g" placeholder="Поиск задач" enterkeyhint="search" autocomplete="off"><button id="x" class="g" aria-label="стереть">×</button></div>
+<div id="list"></div></div>
 <div id="empty"><button class="g big" onclick="openAdd()"><svg width="80" height="80" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M40 12v56M12 40h56"/></svg></button></div>
 
+<div id="archive" class="scr"><h2>Архив</h2>
+<div id="af" class="row" style="gap:8px"></div><div id="al"></div></div>
+
 <div id="settings" class="scr"><h2>Настройки</h2>
-<div class="g card" style="margin-top:0"><div class="sub" style="margin:0"><span>Язык</span><span>Русский</span></div></div>
+<div class="g card" style="margin-top:0"><div class="row" style="justify-content:space-between"><span>Язык</span><span>Русский</span></div></div>
 <button class="pill red" style="margin-top:20px" onclick="ask('Вы действительно хотите сбросить все данные?','сбросить',()=>{S.tasks=[];save()})">Сбросить данные</button></div>
 
 <div id="profile" class="scr"><h2>Профиль</h2>
 <p style="margin:0 0 8px">Ник в приложении</p><input id="nk">
-<button class="pill" onclick="S.nick=document.getElementById('nk').value.trim();save()">сохранить</button><br>
-<button class="pill red" style="margin-top:20px" onclick="ask('Удалить аккаунт?','удалить',()=>{S={tasks:[],nick:''};save();show('home')})">Удалить аккаунт</button></div>
+<button class="pill" onclick="S.nick=$('#nk').value.trim();save()">сохранить</button><br>
+<button class="pill red" style="margin-top:20px" onclick="ask('Удалить аккаунт?','удалить',()=>{S={tasks:[],nick:'',set:{c:1,v:1},since:Date.now()};save();go(0)})">Удалить аккаунт</button></div>
 
 <div id="ov" onclick="drw(0)"></div>
-<div id="dr" class="g"><div>Уведомления</div><div>Контакты</div><div>Архив</div></div>
+<div id="dr" class="g"><div style="opacity:.55">Уведомления</div><div onclick="drw(0);openArch()">Архив</div><div style="opacity:.55">Оставить отзыв</div></div>
 <div id="md"><div id="mb" class="g"></div></div>
+<div id="beta" class="g">бета</div>
 
 <nav id="nav" class="g">
-<div id="beta" class="g">бета</div>
 <div id="bub"></div>
 <div class="sl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></div>
 <div class="sl"><svg viewBox="0 0 1080 1280"><g fill="currentColor" stroke="currentColor"><rect x="258" y="427" width="564" height="563"/><rect x="322" y="130" width="61" height="300"/><rect x="707" y="130" width="61" height="300"/><line x1="335" y1="150" x2="228" y2="312" stroke-width="58"/><line x1="740" y1="150" x2="875" y2="305" stroke-width="58"/><line x1="258" y1="860" x2="102" y2="982" stroke-width="56"/><line x1="822" y1="780" x2="955" y2="605" stroke-width="56"/><rect x="258" y="990" width="52" height="262"/><rect x="358" y="990" width="52" height="217"/><rect x="448" y="990" width="48" height="123"/><rect x="580" y="990" width="47" height="123"/><rect x="668" y="990" width="50" height="217"/><rect x="770" y="990" width="52" height="252"/></g><rect x="321" y="545" width="132" height="130"/><rect x="637" y="545" width="132" height="130"/><rect x="383" y="571" width="60" height="38" fill="#fff"/><rect x="646" y="571" width="60" height="38" fill="#fff"/><rect x="476" y="802" width="128" height="74"/><rect x="510" y="802" width="60" height="38" fill="#6f918a"/></svg></div>
@@ -78,73 +97,164 @@ h2{margin:0 0 16px;font-weight:normal}
 <script>
 const $=s=>document.querySelector(s);
 const tg=window.Telegram&&Telegram.WebApp;
-try{tg.ready();tg.expand();tg.setBackgroundColor('#1c2e26');tg.setHeaderColor('#1c2e26')}catch(e){}
+const T=f=>{try{f()}catch(e){}};
+T(()=>tg.ready());T(()=>tg.expand());T(()=>tg.disableVerticalSwipes());
+T(()=>tg.setBackgroundColor('#1c2e26'));T(()=>tg.setHeaderColor('#1c2e26'));
 let S;try{S=JSON.parse(localStorage.getItem('s'))}catch(e){}
-S=S||{tasks:[],nick:''};
-let pg='home',cur=0;
-const pages={0:'home',3:'settings',4:'profile'};
+S=S||{};S.tasks=S.tasks||[];S.nick=S.nick||'';S.set=S.set||{c:1,v:1};S.since=S.since||Date.now();
+S.tasks.forEach(t=>{if(!t.st)t.st='a'});
+let page='home',tab=0,pos=0,bt,ui={},af='f',_f,editing,d=null,sw=null;
+const TR='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pct=t=>t.subs.length?Math.round(t.subs.filter(s=>s.d).length/t.subs.length*100):0;
-const tgNick=()=>{try{const u=tg.initDataUnsafe.user;return u.username||u.first_name}catch(e){return 'Гость'}};
-function save(){try{localStorage.setItem('s',JSON.stringify(S))}catch(e){}render()}
-function render(){
- const q=$('#q').value.toLowerCase(),e=!S.tasks.length;
- $('#empty').style.display=(e&&pg=='home')?'flex':'none';
- $('#q').style.display=e?'none':'block';
- $('#list').innerHTML=S.tasks.filter(t=>t.title.toLowerCase().includes(q)).map((t,i)=>{const p=pct(t);
- return `<div class="g card"><div class="row"><div class="tt">${i+1}. ${esc(t.title)}<div class="pr"><span>${p}%</span><div class="bar"><i style="width:${p}%"></i></div><span>100%</span></div></div><button class="pill" onclick="opn(${t.id})">${t.open?'закрыть':'открыть'}</button></div>`
- +(t.open?t.subs.map((s,j)=>`<div class="sub"><span>${esc(s.t)}</span><button class="pill sm" onclick="chk(${t.id},${j})">${s.d?'✓':'✕'}</button></div>`).join(''):'')+`</div>`}).join('');
-}
 const gt=id=>S.tasks.find(t=>t.id==id);
-function opn(id){const t=gt(id);t.open=!t.open;save()}
-function chk(id,j){const s=gt(id).subs[j];s.d=!s.d;save()}
-function show(p){pg=p;document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==p));if(p=='profile')$('#nk').value=S.nick||tgNick();render()}
-function drw(o){$('#dr').classList.toggle('on',!!o);$('#ov').classList.toggle('on',!!o)}
-function modal(h){$('#mb').innerHTML=h;$('#md').classList.add('on')}
-function closeM(){$('#md').classList.remove('on')}
-function ask(t,ok,fn){window._f=fn;modal(`<div>${t}</div><div class="btns"><button class="pill red" onclick="closeM();_f()">${ok}</button><button class="pill" onclick="closeM()">отмена</button></div>`)}
-function openAdd(){modal(`<input id="nt" placeholder="Название дела"><textarea id="ns" rows="4" placeholder="Подпункты, каждый с новой строки"></textarea><div class="btns"><button class="pill" onclick="addT()">создать</button><button class="pill" onclick="closeM()">отмена</button></div>`)}
-function addT(){const t=$('#nt').value.trim();if(!t)return;
- const subs=$('#ns').value.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>({t:x,d:false}));
- S.tasks.push({id:Date.now(),title:t,subs,open:false});closeM();show('home');save()}
+const tgNick=()=>{try{const u=tg.initDataUnsafe.user;return u.username||u.first_name||'Гость'}catch(e){return 'Гость'}};
+const hap=()=>T(()=>{if(S.set.v)tg.HapticFeedback.impactOccurred('light')});
+const hapN=()=>T(()=>{if(S.set.v)tg.HapticFeedback.notificationOccurred('success')});
+function save(){T(()=>localStorage.setItem('s',JSON.stringify(S)));render()}
 
-const nav=$('#nav'),bub=$('#bub');
+const q=$('#q'),xb=$('#x'),nav=$('#nav'),bub=$('#bub'),bp=$('#beta');
 const W=()=>nav.clientWidth/5;
-function place(l,w){bub.style.transform=`translateX(${l}px)`;bub.style.width=w+'px'}
-function home(){place(cur*W()+4,W()-8)}
-function goTo(i){
- if(i==cur||!(i in pages)){home();return}
- const a=Math.min(i,cur),b=Math.max(i,cur);
- place(a*W()+4,(b-a+1)*W()-8);
- cur=i;show(pages[i]);
- setTimeout(home,170);
+
+function card(t,n){
+ const p=pct(t);
+ return `<div class="g card" id="c${t.id}"><div class="row"><div class="tt">${n}. ${esc(t.title)}<div class="pr"><span>${p}%</span><div class="bar"><i style="width:${p}%"></i></div><span>100%</span></div></div><button class="pill" onclick="opn(${t.id})">${t.open?'закрыть':'открыть'}</button></div>`
+ +(t.open?t.subs.map((s,j)=>{
+   const ch=ui.id==t.id&&ui.j==j;
+   return `<div class="sub"><span>${esc(s.t)}</span>`+(ch
+    ?`<span class="row" style="gap:6px"><button class="pill sm" onclick="setS(${t.id},${j},1)">✓</button><button class="pill sm" onclick="setS(${t.id},${j},0)">✕</button></span>`
+    :`<button class="pill sm" onclick="pk(${t.id},${j})">${s.d?'✓':'✕'}</button>`)+`</div>`}).join('')
+  +`<div class="row act"><button class="pill red" onclick="delT(${t.id})">${TR}</button><button class="pill" onclick="editT(${t.id})">редактировать</button><button class="pill" onclick="fin(${t.id})">завершить</button></div>`:'')
+ +`</div>`;
 }
-let d=null;
+function render(){
+ const f=q.value.trim().toLowerCase(),L=S.tasks.filter(t=>t.st=='a'),e=!L.length&&!f;
+ $('#empty').style.display=(e&&page=='home')?'flex':'none';
+ $('.srch').style.display=e?'none':'block';
+ $('#list').innerHTML=L.filter(t=>t.title.toLowerCase().includes(f)).map((t,i)=>card(t,i+1)).join('')||(f?'<p style="text-align:center;opacity:.7;margin-top:30px">Ничего не найдено</p>':'');
+ $('#af').innerHTML=`<button class="pill ${af=='f'?'on':''}" onclick="setAf('f')">завершённые</button><button class="pill ${af=='d'?'on':''}" onclick="setAf('d')">удалённые</button>`;
+ const A=S.tasks.filter(t=>t.st==af).sort((a,b)=>(b.ts||0)-(a.ts||0));
+ $('#al').innerHTML=A.map(t=>`<div class="sw"><button class="pill rs" onclick="restore(${t.id})">восстановить</button><div class="g card swr">${esc(t.title)}<div class="pr"><span>${pct(t)}%</span><div class="bar"><i style="width:${pct(t)}%"></i></div></div></div></div>`).join('')||'<p style="text-align:center;opacity:.7;margin-top:30px">Здесь пока пусто</p>';
+}
+function opn(id){const t=gt(id);t.open=!t.open;ui={};save()}
+function pk(id,j){ui={id,j};render()}
+function setS(id,j,v){
+ const t=gt(id),b=pct(t);t.subs[j].d=!!v;ui={};hap();save();
+ if(b<100&&pct(t)==100)ask('Вы завершили задачу?','Да, завершил',()=>done(id),0,'ещё нет');
+}
+function delT(id){ask('Удалить дело?','удалить',()=>{const t=gt(id);t.st='d';t.ts=Date.now();save()})}
+function fin(id){
+ const t=gt(id);
+ pct(t)==100?ask('Вы завершили задачу?','Да, завершил',()=>done(id),0,'ещё нет'):ask('Не все подпункты выполнены. Завершить всё равно?','завершить',()=>done(id),0);
+}
+function done(id){
+ hapN();const c=$('#c'+id);if(S.set.c&&c)conf(c);
+ setTimeout(()=>{const t=gt(id);t.st='f';t.ts=Date.now();save()},S.set.c?1500:0);
+}
+function conf(c){
+ for(let i=0;i<28;i++){
+  const p=document.createElement('i'),s=4+Math.random()*4,x=(Math.random()-.5)*90,y=70+Math.random()*100;
+  p.style.cssText=`position:absolute;left:${10+Math.random()*80}%;bottom:8px;width:${s}px;height:${s}px;border-radius:${Math.random()<.5?'50%':'1px'};background:#fff;pointer-events:none`;
+  c.appendChild(p);
+  p.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${x*.6}px,${-y}px)`,opacity:1,offset:.5},{transform:`translate(${x}px,${-y*.3}px)`,opacity:0}],{duration:1000+Math.random()*500,easing:'ease-out'}).onfinish=()=>p.remove();
+ }
+}
+function restore(id){const t=gt(id);t.st='a';t.ts=Date.now();hap();save()}
+function setAf(v){af=v;render()}
+function editT(id){
+ const t=gt(id);editing=id;
+ modal(`<input id="et" value="${esc(t.title)}"><textarea id="es" rows="6" placeholder="Подпункты, каждый с новой строки">${esc(t.subs.map(s=>s.t).join('\n'))}</textarea><div class="btns"><button class="pill" onclick="saveE()">сохранить</button><button class="pill" onclick="closeM()">отмена</button></div>`);
+}
+function saveE(){
+ const t=gt(editing),n=$('#et').value.trim();if(!n)return;
+ const L=$('#es').value.split('\n').map(x=>x.trim()).filter(Boolean),old=t.subs.slice(),used=new Set();
+ t.title=n;
+ t.subs=L.map((x,j)=>{
+  let k=old.findIndex((o,m)=>o.t==x&&!used.has(m));
+  if(k<0&&old[j]&&!used.has(j)&&!L.includes(old[j].t))k=j;
+  if(k>=0)used.add(k);
+  return{t:x,d:k>=0?old[k].d:false};
+ });
+ closeM();save();
+}
+function openAdd(){modal(`<input id="nt" placeholder="Название дела"><textarea id="ns" rows="4" placeholder="Подпункты, каждый с новой строки"></textarea><div class="btns"><button class="pill" onclick="addT()">создать</button><button class="pill" onclick="closeM()">отмена</button></div>`)}
+function addT(){
+ const t=$('#nt').value.trim();if(!t)return;
+ const subs=$('#ns').value.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>({t:x,d:false}));
+ S.tasks.push({id:Date.now(),title:t,subs,open:false,st:'a'});closeM();save();
+}
+function modal(h){$('#mb').innerHTML=h;$('#md').classList.add('on')}
+function closeM(){$('#md').classList.remove('on');if(pos!=tab)rst(tab)}
+function ask(m,ok,fn,red=1,no='отмена'){_f=fn;modal(`<div>${m}</div><div class="btns"><button class="pill ${red?'red':''}" onclick="closeM();_f()">${ok}</button><button class="pill" onclick="closeM()">${no}</button></div>`)}
+function drw(o){$('#dr').classList.toggle('on',!!o);$('#ov').classList.toggle('on',!!o)}
+function show(p){page=p;document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==p));if(p=='profile')$('#nk').value=S.nick||tgNick();render()}
+function openArch(){show('archive')}
+
+function setB(a,b,dir){
+ const w=W(),n=nav.clientWidth;
+ bub.style.setProperty('--tl',dir<0?'.26s':'.44s');
+ bub.style.setProperty('--tr',dir>0?'.26s':'.44s');
+ bub.style.left=(a*w+4)+'px';
+ bub.style.right=(n-(b+1)*w+4)+'px';
+}
+function rst(i){setB(i,i,Math.sign(i-pos)||1);pos=i}
+function beta(){const r=nav.getBoundingClientRect();bp.style.left=(r.left+1.5*W())+'px';bp.classList.add('on')}
+function go(i){
+ clearTimeout(bt);
+ if(i==1){rst(1);beta();hap();bt=setTimeout(()=>{bp.classList.remove('on');rst(tab)},3000);return}
+ bp.classList.remove('on');
+ if(i==2){rst(2);hap();openAdd();return}
+ tab=i;rst(i);hap();show(i==0?'home':i==3?'settings':'profile');
+}
 nav.addEventListener('pointerdown',e=>{
- const x=e.clientX-nav.getBoundingClientRect().left;
- d={x0:e.clientX,i:Math.min(4,Math.floor(x/W())),dx:0,drag:false,onB:Math.abs(x-(cur*W()+W()/2))<W()/2};
- nav.setPointerCapture(e.pointerId);
+ const x=e.clientX-nav.getBoundingClientRect().left,i=Math.max(0,Math.min(4,Math.floor(x/W())));
+ d={x0:e.clientX,i,on:i==pos,m:0,c:0};nav.setPointerCapture(e.pointerId);
 });
 nav.addEventListener('pointermove',e=>{
  if(!d)return;
- const dx=Math.max(-W(),Math.min(W(),e.clientX-d.x0));
- if(!d.drag&&Math.abs(dx)>8&&d.onB){d.drag=true;bub.style.transition='none'}
- if(!d.drag)return;
- d.dx=dx;const b=W()-8,l=cur*W()+4;
- dx>0?place(l,b+dx):place(l+dx,b-dx);
+ const dx=e.clientX-d.x0;
+ if(!d.m&&d.on&&Math.abs(dx)>8){d.m=1;bub.classList.add('drag');clearTimeout(bt);bp.classList.remove('on')}
+ if(!d.m)return;
+ const w=W(),n=nav.clientWidth;let c=Math.max(-w,Math.min(w,dx));
+ if((pos==0&&c<0)||(pos==4&&c>0))c=0;
+ d.c=c;
+ const l=pos*w+4,r=n-(pos+1)*w+4;
+ bub.style.left=(c<0?l+c:l)+'px';
+ bub.style.right=(c>0?r-c:r)+'px';
 });
 nav.addEventListener('pointerup',()=>{
- if(!d)return;
- bub.style.transition='';
- if(d.drag){
-  const t=cur+(Math.abs(d.dx)>W()*.4?Math.sign(d.dx):0);
-  if(t==2){home();openAdd()}else goTo(t);
- }else{
-  if(d.i==2)openAdd();else if(d.i!=1)goTo(d.i);
- }
- d=null;
+ if(!d)return;const x=d;d=null;bub.classList.remove('drag');
+ if(x.m){const t=pos+(Math.abs(x.c)>W()*.35?Math.sign(x.c):0);t==pos?rst(pos):go(t)}
+ else go(x.i);
 });
-addEventListener('resize',home);
-home();render();
+nav.addEventListener('pointercancel',()=>{if(d){d=null;bub.classList.remove('drag');rst(pos)}});
+addEventListener('resize',()=>setB(pos,pos,1));
+
+q.addEventListener('input',()=>{xb.classList.toggle('on',!!q.value);render()});
+q.addEventListener('keydown',e=>{if(e.key=='Enter')q.blur()});
+q.addEventListener('focus',()=>document.body.classList.add('typing'));
+q.addEventListener('blur',()=>document.body.classList.remove('typing'));
+xb.addEventListener('pointerdown',()=>{xb._f=document.activeElement==q});
+xb.addEventListener('click',()=>{q.value='';xb.classList.remove('on');render();if(xb._f)q.focus()});
+document.addEventListener('pointerdown',e=>{if(e.target!=q&&e.target!=xb)q.blur()});
+$('#list').addEventListener('touchmove',()=>q.blur(),{passive:true});
+
+$('#al').addEventListener('pointerdown',e=>{
+ const r=e.target.closest('.swr');if(!r)return;
+ sw={r,b:r.previousElementSibling,x:e.clientX,o:r.classList.contains('op')?-110:0,m:0,v:0};
+});
+addEventListener('pointermove',e=>{
+ if(!sw)return;const dx=e.clientX-sw.x;
+ if(Math.abs(dx)>8)sw.m=1;
+ if(sw.m){sw.v=Math.max(-110,Math.min(0,sw.o+dx));sw.r.style.transition='none';sw.r.style.transform=`translateX(${sw.v}px)`;sw.b.style.opacity=-sw.v/110}
+});
+function swEnd(){
+ if(!sw)return;const open=(sw.m?sw.v:sw.o)<-50;
+ sw.r.style.transition='';sw.r.classList.toggle('op',open);
+ sw.r.style.transform=open?'translateX(-110px)':'';sw.b.style.opacity=open?1:0;sw=null;
+}
+addEventListener('pointerup',swEnd);addEventListener('pointercancel',swEnd);
+
+rst(0);render();
 </script>
 </body></html>
