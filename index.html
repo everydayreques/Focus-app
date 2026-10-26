@@ -17,8 +17,8 @@ h2{margin:0 0 16px;font-weight:normal}
 input,textarea{width:100%;padding:14px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:17px;margin-bottom:10px;outline:none}
 ::placeholder{color:rgba(255,255,255,.5)}
 .srch{position:relative;margin-bottom:6px}
-.srch input{margin:0;padding-right:54px}
-#x{position:absolute;right:10px;top:9px;width:34px;height:34px;border-radius:50%;padding:0;font-size:22px;color:inherit;opacity:0;transform:scale(.4);pointer-events:none;transition:opacity .25s,transform .35s var(--ease)}
+.srch input{margin:0;height:52px;padding-top:0;padding-bottom:0;padding-right:56px}
+#x{position:absolute;right:9px;top:9px;width:34px;height:34px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;color:inherit;opacity:0;transform:scale(.4);pointer-events:none;transition:opacity .25s,transform .35s var(--ease)}
 #x.on{opacity:1;transform:none;pointer-events:auto}
 .card{position:relative;overflow:hidden;border-radius:26px;padding:16px;margin-top:14px}
 .row{display:flex;align-items:center;gap:10px}
@@ -28,16 +28,25 @@ input,textarea{width:100%;padding:14px 18px;border-radius:22px;border:1px solid 
 .bar i{display:block;height:100%;background:#3a4a46;transition:width .4s var(--ease)}
 .pill{border-radius:20px;padding:10px 18px;background:rgba(255,255,255,.14);color:inherit;border:1px solid rgba(255,255,255,.2);font-size:17px}
 .pill.on{background:rgba(255,255,255,.32)}
-.sm{padding:4px 14px}
+.sm{padding:4px 14px;min-width:58px}
 .red{color:#ff9a90;background:rgba(255,80,80,.18)}
 .sub{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:17px;gap:8px}
-.act{justify-content:space-between;margin-top:16px}
-.act svg{display:block}
+.act{display:flex;gap:8px;margin-top:16px}
+.act .pill{flex:1;min-width:0;padding:10px 6px;font-size:15px;white-space:nowrap;text-align:center}
+.act .pill.red{flex:0 0 48px;padding:10px 0;display:flex;align-items:center;justify-content:center}
 #empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
 .big{width:150px;height:150px;border-radius:50%;color:#6f918a}
 .sw{position:relative;margin-top:14px}
 .sw .card{margin:0;touch-action:pan-y;transition:transform .3s var(--ease)}
-.rs{position:absolute;right:6px;top:50%;transform:translateY(-50%);opacity:0}
+.rs{position:absolute;right:8px;top:50%;transform:translateY(-50%);opacity:0;width:96px;padding:9px 0;font-size:14px;text-align:center;white-space:nowrap;z-index:0}
+.st{display:flex;align-items:center;justify-content:space-between;padding:13px 0;font-size:18px}
+.st+.st{border-top:1px solid rgba(255,255,255,.12)}
+.tgl{width:54px;height:32px;border-radius:16px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25);position:relative;transition:background .3s}
+.tgl i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .35s var(--ease)}
+.tgl.on{background:rgba(150,215,195,.65)}
+.tgl.on i{transform:translateX(22px)}
+.av{width:64px;height:64px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.18);font-size:28px;flex:0 0 64px}
+.av img{width:100%;height:100%;object-fit:cover}
 #nav{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));height:78px;border-radius:39px;display:flex;touch-action:none;z-index:5;transition:transform .35s var(--ease)}
 body.typing #nav{transform:translateY(170%)}
 .sl{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;color:#6f918a}
@@ -64,7 +73,7 @@ body.typing #nav{transform:translateY(170%)}
 </div>
 
 <div id="home" class="scr on">
-<div class="srch"><input id="q" class="g" placeholder="Поиск задач" enterkeyhint="search" autocomplete="off"><button id="x" class="g" aria-label="стереть">×</button></div>
+<div class="srch"><input id="q" class="g" placeholder="Поиск задач" enterkeyhint="search" autocomplete="off"><button id="x" class="g" aria-label="стереть"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div>
 <div id="list"></div></div>
 <div id="empty"><button class="g big" onclick="openAdd()"><svg width="80" height="80" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M40 12v56M12 40h56"/></svg></button></div>
 
@@ -72,13 +81,22 @@ body.typing #nav{transform:translateY(170%)}
 <div id="af" class="row" style="gap:8px"></div><div id="al"></div></div>
 
 <div id="settings" class="scr"><h2>Настройки</h2>
-<div class="g card" style="margin-top:0"><div class="row" style="justify-content:space-between"><span>Язык</span><span>Русский</span></div></div>
+<div class="g card" style="margin-top:0">
+<div class="st"><span>Язык</span><span style="opacity:.7">Русский</span></div>
+<div class="st"><span>Конфетти</span><div class="tgl" id="tc" onclick="tglS('c')"><i></i></div></div>
+<div class="st"><span>Вибрация</span><div class="tgl" id="tv" onclick="tglS('v')"><i></i></div></div>
+<div class="st" onclick="privacy()"><span>Политика конфиденциальности</span><span style="opacity:.7">›</span></div>
+</div>
 <button class="pill red" style="margin-top:20px" onclick="ask('Вы действительно хотите сбросить все данные?','сбросить',()=>{S.tasks=[];save()})">Сбросить данные</button></div>
 
 <div id="profile" class="scr"><h2>Профиль</h2>
-<p style="margin:0 0 8px">Ник в приложении</p><input id="nk">
-<button class="pill" onclick="S.nick=$('#nk').value.trim();save()">сохранить</button><br>
-<button class="pill red" style="margin-top:20px" onclick="ask('Удалить аккаунт?','удалить',()=>{S={tasks:[],nick:'',set:{c:1,v:1},since:Date.now()};save();go(0)})">Удалить аккаунт</button></div>
+<div class="g card" style="margin-top:0"><div class="row" style="gap:14px"><div id="pav" class="av"></div><div><div id="pname" style="font-size:22px"></div><div id="pdate" style="font-size:14px;opacity:.7;margin-top:2px"></div></div></div></div>
+<div class="g card"><div style="margin-bottom:8px">Ник в приложении</div><input id="nk" maxlength="24"><button class="pill" onclick="saveNick()">сохранить</button></div>
+<div class="g card"><div style="margin-bottom:12px">Статистика</div>
+<div class="row" style="justify-content:space-around;text-align:center"><div><div id="sa" style="font-size:30px"></div><div style="font-size:14px;opacity:.7">в процессе</div></div><div><div id="sf" style="font-size:30px"></div><div style="font-size:14px;opacity:.7">завершено</div></div></div>
+<div style="font-size:14px;opacity:.7;margin:16px 0 8px">Завершено за 7 дней</div>
+<div id="ch" style="display:flex;gap:6px;height:110px;align-items:flex-end"></div></div>
+<button class="pill red" style="margin-top:20px" onclick="ask('Удалить аккаунт?','удалить',()=>{S={tasks:[],nick:'',set:{c:1,v:1},since:Date.now()};$('#nk').value='';save();go(0)})">Удалить аккаунт</button></div>
 
 <div id="ov" onclick="drw(0)"></div>
 <div id="dr" class="g"><div style="opacity:.55">Уведомления</div><div onclick="drw(0);openArch()">Архив</div><div style="opacity:.55">Оставить отзыв</div></div>
@@ -103,12 +121,14 @@ T(()=>tg.setBackgroundColor('#1c2e26'));T(()=>tg.setHeaderColor('#1c2e26'));
 let S;try{S=JSON.parse(localStorage.getItem('s'))}catch(e){}
 S=S||{};S.tasks=S.tasks||[];S.nick=S.nick||'';S.set=S.set||{c:1,v:1};S.since=S.since||Date.now();
 S.tasks.forEach(t=>{if(!t.st)t.st='a'});
-let page='home',tab=0,pos=0,bt,ui={},af='f',_f,editing,d=null,sw=null;
+let page='home',tab=0,pos=0,bt,af='f',_f,editing,d=null,sw=null;
+const RV=112;
 const TR='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pct=t=>t.subs.length?Math.round(t.subs.filter(s=>s.d).length/t.subs.length*100):0;
 const gt=id=>S.tasks.find(t=>t.id==id);
 const tgNick=()=>{try{const u=tg.initDataUnsafe.user;return u.username||u.first_name||'Гость'}catch(e){return 'Гость'}};
+const tgPhoto=()=>{try{return tg.initDataUnsafe.user.photo_url||''}catch(e){return ''}};
 const hap=()=>T(()=>{if(S.set.v)tg.HapticFeedback.impactOccurred('light')});
 const hapN=()=>T(()=>{if(S.set.v)tg.HapticFeedback.notificationOccurred('success')});
 function save(){T(()=>localStorage.setItem('s',JSON.stringify(S)));render()}
@@ -119,13 +139,24 @@ const W=()=>nav.clientWidth/5;
 function card(t,n){
  const p=pct(t);
  return `<div class="g card" id="c${t.id}"><div class="row"><div class="tt">${n}. ${esc(t.title)}<div class="pr"><span>${p}%</span><div class="bar"><i style="width:${p}%"></i></div><span>100%</span></div></div><button class="pill" onclick="opn(${t.id})">${t.open?'закрыть':'открыть'}</button></div>`
- +(t.open?t.subs.map((s,j)=>{
-   const ch=ui.id==t.id&&ui.j==j;
-   return `<div class="sub"><span>${esc(s.t)}</span>`+(ch
-    ?`<span class="row" style="gap:6px"><button class="pill sm" onclick="setS(${t.id},${j},1)">✓</button><button class="pill sm" onclick="setS(${t.id},${j},0)">✕</button></span>`
-    :`<button class="pill sm" onclick="pk(${t.id},${j})">${s.d?'✓':'✕'}</button>`)+`</div>`}).join('')
-  +`<div class="row act"><button class="pill red" onclick="delT(${t.id})">${TR}</button><button class="pill" onclick="editT(${t.id})">редактировать</button><button class="pill" onclick="fin(${t.id})">завершить</button></div>`:'')
+ +(t.open?t.subs.map((s,j)=>`<div class="sub"><span>${esc(s.t)}</span><button class="pill sm" onclick="tog(${t.id},${j})">${s.d?'✓':'✕'}</button></div>`).join('')
+  +`<div class="act"><button class="pill red" onclick="delT(${t.id})">${TR}</button><button class="pill" onclick="editT(${t.id})">редактировать</button><button class="pill" onclick="fin(${t.id})">завершить</button></div>`:'')
  +`</div>`;
+}
+function stats(){
+ const a=S.tasks.filter(t=>t.st=='a').length,f=S.tasks.filter(t=>t.st=='f').length;
+ const days=[];
+ for(let i=6;i>=0;i--){const x=new Date();x.setHours(0,0,0,0);x.setDate(x.getDate()-i);days.push({k:x.getTime(),l:['вс','пн','вт','ср','чт','пт','сб'][x.getDay()],n:0})}
+ S.tasks.filter(t=>t.st=='f'&&t.ts).forEach(t=>{const x=new Date(t.ts);x.setHours(0,0,0,0);const z=days.find(y=>y.k==x.getTime());if(z)z.n++});
+ const m=Math.max(1,...days.map(z=>z.n));
+ return{a,f,html:days.map(z=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px"><span style="font-size:13px;opacity:.8">${z.n||''}</span><div style="width:60%;height:${Math.max(4,z.n/m*60)}px;border-radius:6px;background:rgba(255,255,255,${z.n?0.55:0.18})"></div><span style="font-size:13px;opacity:.7">${z.l}</span></div>`).join('')};
+}
+function renderProf(){
+ const n=S.nick||tgNick(),u=tgPhoto(),k=u+'|'+n[0],av=$('#pav');
+ $('#pname').textContent=n;
+ $('#pdate').textContent='В приложении с '+new Date(S.since).toLocaleDateString('ru-RU');
+ if(av.dataset.k!=k){av.dataset.k=k;const L=esc(n[0].toUpperCase());av.innerHTML=u?`<img src="${esc(u)}" onerror="this.parentNode.textContent='${L}'">`:L}
+ const s=stats();$('#sa').textContent=s.a;$('#sf').textContent=s.f;$('#ch').innerHTML=s.html;
 }
 function render(){
  const f=q.value.trim().toLowerCase(),L=S.tasks.filter(t=>t.st=='a'),e=!L.length&&!f;
@@ -135,11 +166,12 @@ function render(){
  $('#af').innerHTML=`<button class="pill ${af=='f'?'on':''}" onclick="setAf('f')">завершённые</button><button class="pill ${af=='d'?'on':''}" onclick="setAf('d')">удалённые</button>`;
  const A=S.tasks.filter(t=>t.st==af).sort((a,b)=>(b.ts||0)-(a.ts||0));
  $('#al').innerHTML=A.map(t=>`<div class="sw"><button class="pill rs" onclick="restore(${t.id})">восстановить</button><div class="g card swr">${esc(t.title)}<div class="pr"><span>${pct(t)}%</span><div class="bar"><i style="width:${pct(t)}%"></i></div></div></div></div>`).join('')||'<p style="text-align:center;opacity:.7;margin-top:30px">Здесь пока пусто</p>';
+ $('#tc').classList.toggle('on',!!S.set.c);$('#tv').classList.toggle('on',!!S.set.v);
+ renderProf();
 }
-function opn(id){const t=gt(id);t.open=!t.open;ui={};save()}
-function pk(id,j){ui={id,j};render()}
-function setS(id,j,v){
- const t=gt(id),b=pct(t);t.subs[j].d=!!v;ui={};hap();save();
+function opn(id){const t=gt(id);t.open=!t.open;save()}
+function tog(id,j){
+ const t=gt(id),b=pct(t);t.subs[j].d=!t.subs[j].d;hap();save();
  if(b<100&&pct(t)==100)ask('Вы завершили задачу?','Да, завершил',()=>done(id),0,'ещё нет');
 }
 function delT(id){ask('Удалить дело?','удалить',()=>{const t=gt(id);t.st='d';t.ts=Date.now();save()})}
@@ -161,6 +193,9 @@ function conf(c){
 }
 function restore(id){const t=gt(id);t.st='a';t.ts=Date.now();hap();save()}
 function setAf(v){af=v;render()}
+function tglS(k){S.set[k]=S.set[k]?0:1;if(k=='v')hap();save()}
+function privacy(){modal(`<div>Политика конфиденциальности появится здесь перед открытым запуском приложения.</div><div class="btns"><button class="pill" onclick="closeM()">понятно</button></div>`)}
+function saveNick(){S.nick=$('#nk').value.trim();hap();save();$('#nk').blur()}
 function editT(id){
  const t=gt(id);editing=id;
  modal(`<input id="et" value="${esc(t.title)}"><textarea id="es" rows="6" placeholder="Подпункты, каждый с новой строки">${esc(t.subs.map(s=>s.t).join('\n'))}</textarea><div class="btns"><button class="pill" onclick="saveE()">сохранить</button><button class="pill" onclick="closeM()">отмена</button></div>`);
@@ -236,22 +271,22 @@ q.addEventListener('focus',()=>document.body.classList.add('typing'));
 q.addEventListener('blur',()=>document.body.classList.remove('typing'));
 xb.addEventListener('pointerdown',()=>{xb._f=document.activeElement==q});
 xb.addEventListener('click',()=>{q.value='';xb.classList.remove('on');render();if(xb._f)q.focus()});
-document.addEventListener('pointerdown',e=>{if(e.target!=q&&e.target!=xb)q.blur()});
+document.addEventListener('pointerdown',e=>{if(!e.target.closest('#q,#x'))q.blur()});
 $('#list').addEventListener('touchmove',()=>q.blur(),{passive:true});
 
 $('#al').addEventListener('pointerdown',e=>{
  const r=e.target.closest('.swr');if(!r)return;
- sw={r,b:r.previousElementSibling,x:e.clientX,o:r.classList.contains('op')?-110:0,m:0,v:0};
+ sw={r,b:r.previousElementSibling,x:e.clientX,o:r.classList.contains('op')?-RV:0,m:0,v:0};
 });
 addEventListener('pointermove',e=>{
  if(!sw)return;const dx=e.clientX-sw.x;
  if(Math.abs(dx)>8)sw.m=1;
- if(sw.m){sw.v=Math.max(-110,Math.min(0,sw.o+dx));sw.r.style.transition='none';sw.r.style.transform=`translateX(${sw.v}px)`;sw.b.style.opacity=-sw.v/110}
+ if(sw.m){sw.v=Math.max(-RV,Math.min(0,sw.o+dx));sw.r.style.transition='none';sw.r.style.transform=`translateX(${sw.v}px)`;sw.b.style.opacity=-sw.v/RV}
 });
 function swEnd(){
- if(!sw)return;const open=(sw.m?sw.v:sw.o)<-50;
+ if(!sw)return;const open=(sw.m?sw.v:sw.o)<-RV/2;
  sw.r.style.transition='';sw.r.classList.toggle('op',open);
- sw.r.style.transform=open?'translateX(-110px)':'';sw.b.style.opacity=open?1:0;sw=null;
+ sw.r.style.transform=open?`translateX(-${RV}px)`:'';sw.b.style.opacity=open?1:0;sw=null;
 }
 addEventListener('pointerup',swEnd);addEventListener('pointercancel',swEnd);
 
