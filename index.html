@@ -3,72 +3,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <title>Фокус</title>
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:Georgia,'Times New Roman',serif}
-:root{--ease:cubic-bezier(.32,.72,0,1)}
-html,body{margin:0;height:100%;overflow:hidden}
-body{color:rgba(255,255,255,.88);background:radial-gradient(circle at 18% 28%,rgba(120,200,180,.3),transparent 40%),radial-gradient(circle at 85% 72%,rgba(30,80,70,.55),transparent 45%),linear-gradient(90deg,#1c2e26,#405b53 55%,#6b8c89)}
-.g{background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(20px) saturate(1.5);backdrop-filter:blur(20px) saturate(1.5);border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 24px rgba(0,0,0,.25)}
-.gl1{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 28px 4px rgba(255,238,170,.28),0 8px 24px rgba(0,0,0,.25)}
-.gl2{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 30px 5px rgba(255,150,60,.38),0 8px 24px rgba(0,0,0,.25)}
-.gl3{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 32px 6px rgba(255,75,65,.42),0 8px 24px rgba(0,0,0,.25)}
-#top{position:fixed;left:0;right:0;top:0;z-index:6;display:flex;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 16px 0}
-.ib{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#9fc3bb;border:0;font-size:22px}
-.scr{position:absolute;inset:0;padding:calc(72px + env(safe-area-inset-top)) 18px 140px;overflow:auto;display:none}
-.scr.on{display:block}
-h2{margin:0 0 16px;font-weight:normal}
-input,textarea{width:100%;padding:14px 18px;border-radius:22px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-size:17px;margin-bottom:10px;outline:none}
-::placeholder{color:rgba(255,255,255,.5)}
-.srch{position:relative;margin-bottom:6px}
-.srch input{margin:0;height:52px;padding-top:0;padding-bottom:0;padding-right:56px}
-#x{position:absolute;right:9px;top:9px;width:34px;height:34px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;color:inherit;opacity:0;transform:scale(.4);pointer-events:none;transition:opacity .25s,transform .35s var(--ease)}
-#x.on{opacity:1;transform:none;pointer-events:auto}
-.card{position:relative;overflow:hidden;border-radius:26px;padding:16px;margin-top:14px}
-.row{display:flex;align-items:center;gap:10px}
-.tt{flex:1;font-size:18px}
-.pr{display:flex;align-items:center;gap:8px;font-size:15px;margin-top:6px}
-.bar{flex:1;height:9px;border-radius:5px;background:rgba(255,255,255,.25);overflow:hidden}
-.bar i{display:block;height:100%;background:#3a4a46;transition:width .4s var(--ease)}
-.pill{border-radius:20px;padding:10px 18px;background:rgba(255,255,255,.14);color:inherit;border:1px solid rgba(255,255,255,.2);font-size:17px}
-.pill.on{background:rgba(255,255,255,.32)}
-.sm{padding:4px 14px;min-width:58px}
-.red{color:#ff9a90;background:rgba(255,80,80,.18)}
-.sub{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:17px;gap:8px}
-.act{display:flex;gap:8px;margin-top:16px}
-.act .pill{flex:1;min-width:0;padding:10px 6px;font-size:15px;white-space:nowrap;text-align:center}
-.act .pill.red{flex:0 0 48px;padding:10px 0;display:flex;align-items:center;justify-content:center}
-#empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
-.big{width:150px;height:150px;border-radius:50%;color:#6f918a}
-.sw{position:relative;margin-top:14px}
-.sw .card{margin:0;touch-action:pan-y;transition:transform .3s var(--ease)}
-.rs{position:absolute;right:8px;top:50%;transform:translateY(-50%);opacity:0;width:96px;padding:9px 0;font-size:14px;text-align:center;white-space:nowrap;z-index:0}
-.st{display:flex;align-items:center;justify-content:space-between;padding:13px 0;font-size:18px}
-.st+.st{border-top:1px solid rgba(255,255,255,.12)}
-.tgl{width:54px;height:32px;border-radius:16px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25);position:relative;transition:background .3s}
-.tgl i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .35s var(--ease)}
-.tgl.on{background:rgba(150,215,195,.65)}
-.tgl.on i{transform:translateX(22px)}
-.av{width:64px;height:64px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.18);font-size:28px;flex:0 0 64px}
-.av img{width:100%;height:100%;object-fit:cover}
-#nav{position:fixed;left:14px;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));height:78px;border-radius:39px;display:flex;touch-action:none;z-index:5;transition:transform .35s var(--ease)}
-body.typing #nav{transform:translateY(170%)}
-.sl{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;color:#6f918a}
-.sl svg{width:32px;height:32px}
-.pl{width:58px;height:58px;border-radius:50%;background:rgba(170,205,200,.5);color:#2c4741;display:flex;align-items:center;justify-content:center}
-#bub{position:absolute;top:6px;bottom:6px;border-radius:33px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.45);z-index:1;transition:left var(--tl,.4s) var(--ease),right var(--tr,.4s) var(--ease)}
-#bub.drag{transition:none}
-#beta{position:fixed;bottom:calc(14px + 76px + env(safe-area-inset-bottom));padding:5px 16px;border-radius:16px;font-size:17px;z-index:4;opacity:0;transform:translate(-50%,46px);transition:transform .55s var(--ease),opacity .4s;pointer-events:none}
-#beta.on{opacity:1;transform:translate(-50%,0)}
-#ov{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
-#ov.on{opacity:1;pointer-events:auto}
-#dr{position:fixed;top:0;bottom:0;left:0;width:74%;transform:translateX(-105%);transition:transform .35s var(--ease);border-radius:0 28px 28px 0;padding:calc(120px + env(safe-area-inset-top)) 28px;z-index:9;font-size:26px}
-#dr.on{transform:none}
-#dr div{margin-bottom:24px}
-#md{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:10}
-#md.on{display:flex}
-#mb{width:86%;border-radius:28px;padding:22px;font-size:19px}
-.btns{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
-</style></head><body>
+<link rel="stylesheet" href="style.css?v=1">
+</head><body>
 
 <div id="top">
 <button class="ib g" onclick="drw(1)"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
@@ -113,4 +49,9 @@ body.typing #nav{transform:translateY(170%)}
 <div class="sl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg></div>
 <div class="sl"><svg viewBox="0 0 1080 1280"><g fill="currentColor" stroke="currentColor"><rect x="258" y="427" width="564" height="563"/><rect x="322" y="130" width="61" height="300"/><rect x="707" y="130" width="61" height="300"/><line x1="335" y1="150" x2="228" y2="312" stroke-width="58"/><line x1="740" y1="150" x2="875" y2="305" stroke-width="58"/><line x1="258" y1="860" x2="102" y2="982" stroke-width="56"/><line x1="822" y1="780" x2="955" y2="605" stroke-width="56"/><rect x="258" y="990" width="52" height="262"/><rect x="358" y="990" width="52" height="217"/><rect x="448" y="990" width="48" height="123"/><rect x="580" y="990" width="47" height="123"/><rect x="668" y="990" width="50" height="217"/><rect x="770" y="990" width="52" height="252"/></g><rect x="321" y="545" width="132" height="130"/><rect x="637" y="545" width="132" height="130"/><rect x="383" y="571" width="60" height="38" fill="#fff"/><rect x="646" y="571" width="60" height="38" fill="#fff"/><rect x="476" y="802" width="128" height="74"/><rect x="510" y="802" width="60" height="38" fill="#6f918a"/></svg></div>
 <div class="sl"><div class="pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></div></div>
-<div class="sl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5.5" stroke-width="3"/>
+<div class="sl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5.5" stroke-width="3"/><circle cx="12" cy="12" r="8.6" stroke-width="3" stroke-dasharray="3 3.4"/></svg></div>
+<div class="sl"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 4-7 8-7s8 2 8 7z"/></svg></div>
+</nav>
+
+<script src="app.js?v=1"></script>
+</body></html>
