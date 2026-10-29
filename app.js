@@ -225,4 +225,4 @@ function swEnd(){
 }
 addEventListener('pointerup',swEnd);addEventListener('pointercancel',swEnd);
 
-rst(0);render();init();
+rst(0);render();
